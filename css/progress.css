@@ -1,0 +1,382 @@
+/* ============================================================
+   progress.css — Progress Bars, Rings, Checkboxes
+   DevOps Atlas Learning Portal
+   ============================================================ */
+
+/* ── Linear Progress Bar ─────────────────────────────────── */
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: var(--progress-bg);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--gradient-brand);
+  border-radius: var(--radius-full);
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.3) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+.progress-bar.thin { height: 4px; }
+.progress-bar.thick { height: 12px; }
+
+.progress-bar.accent .progress-fill {
+  background: var(--gradient-accent);
+}
+
+.progress-bar.warning .progress-fill {
+  background: linear-gradient(90deg, var(--brand-warning), var(--brand-danger));
+}
+
+/* ── Progress with Label ─────────────────────────────────── */
+.progress-labeled {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+
+.progress-value {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+/* ── Circular Progress Ring ──────────────────────────────── */
+.progress-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring svg {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-track {
+  fill: none;
+  stroke: var(--progress-bg);
+  stroke-width: 5;
+}
+
+.progress-ring-fill {
+  fill: none;
+  stroke: url(#ringGradient);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-ring-label {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.progress-ring-pct {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-extrabold);
+  color: var(--text-primary);
+  line-height: 1;
+  font-family: var(--font-mono);
+}
+
+.progress-ring-text {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-weight: var(--weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Custom Checkbox ─────────────────────────────────────── */
+.checkbox-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  display: none;
+}
+
+.checkbox-box {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border-default);
+  background: var(--checkbox-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.checkbox-box::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-brand);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  border-radius: 2px;
+}
+
+.checkbox-box::after {
+  content: '';
+  width: 5px;
+  height: 8px;
+  border: 2px solid white;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg) scale(0) translateY(-1px);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  z-index: 1;
+}
+
+.checkbox-wrapper:hover .checkbox-box {
+  border-color: var(--brand-primary);
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked + .checkbox-box {
+  border-color: transparent;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked + .checkbox-box::before {
+  opacity: 1;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked + .checkbox-box::after {
+  transform: rotate(45deg) scale(1) translateY(-1px);
+}
+
+.checkbox-label {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+  line-height: 1.4;
+}
+
+.checkbox-wrapper:hover .checkbox-label {
+  color: var(--text-primary);
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked ~ .checkbox-label {
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+/* ── Completion Ring (Large, Dashboard) ──────────────────── */
+.completion-ring-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.completion-ring-stats {
+  display: flex;
+  gap: var(--space-6);
+}
+
+.completion-ring-stat {
+  text-align: center;
+}
+
+.completion-ring-stat-value {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-extrabold);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.completion-ring-stat-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Tech Progress Bars (per technology) ─────────────────── */
+.tech-progress-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.tech-progress-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tech-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tech-progress-name {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.tech-progress-count {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ── Milestone Indicators ────────────────────────────────── */
+.milestone-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.milestone-list::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 24px;
+  bottom: 24px;
+  width: 2px;
+  background: var(--border-subtle);
+}
+
+.milestone-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  position: relative;
+}
+
+.milestone-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--border-default);
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-sm);
+  flex-shrink: 0;
+  z-index: 1;
+  transition: all var(--transition-fast);
+}
+
+.milestone-item.done .milestone-dot {
+  background: var(--gradient-brand);
+  border-color: transparent;
+  color: white;
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.milestone-item.current .milestone-dot {
+  border-color: var(--brand-primary);
+  color: var(--brand-primary);
+  box-shadow: var(--shadow-glow-primary);
+}
+
+.milestone-content { flex: 1; }
+
+.milestone-title {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+}
+
+.milestone-desc {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ── Loading Skeleton ────────────────────────────────────── */
+.skeleton {
+  background: var(--bg-glass);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.05) 50%,
+    transparent 100%
+  );
+  animation: skeletonShimmer 1.5s infinite;
+}
+
+@keyframes skeletonShimmer {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(100%); }
+}
+
+.skeleton-text {
+  height: 14px;
+  width: 100%;
+  margin-bottom: var(--space-2);
+}
+
+.skeleton-text.short { width: 60%; }
+.skeleton-text.medium { width: 80%; }
